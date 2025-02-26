@@ -4,6 +4,7 @@ import styles from "../styles/styles";
 import { getInitials } from "../hooks/useGetInitials";
 import Markdown from "react-native-markdown-renderer";
 import chatbotIcon from "../assets/images/chatbot_icon.png";
+import Loader from 'react-native-three-dots-loader'
 
 const Avatar = ({ icon, name, textColor, backgroundColor }) => (
   <View style={[styles.avatarContainer, { backgroundColor }]}>
@@ -50,10 +51,9 @@ const MessageContainer = ({
         {isSender && !loading ? (
   <Text style={[styles.messageText, { color: textColor }]}>{message}</Text>
 ) : !isSender && loading ? (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
 
-<ActivityIndicator size="small" color="blue"/>
-
+<View style={{ flexGrow: 1, minHeight: 30, justifyContent: "center", alignItems: "center"}}>
+  <Loader size={6} dotMargin={4}/>
 </View>
 ) : (
   <Markdown
