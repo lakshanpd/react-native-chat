@@ -45,6 +45,7 @@ function Chat({
   timeContainerColor,
   timeContainerTextColor,
   onEndReached,
+  loading 
 }) {
   const [text, setText] = useState("");
   const flatListRef = useRef(null);
@@ -70,8 +71,9 @@ function Chat({
 
   const messageRenderItem = ({ item }) => {
     const isSender = item.user._id === user._id;
+    const isLoading = item.text === "loading";
     return (
-      <View style={styles.messageWrapper}>
+      <View style={{...styles.messageWrapper}}>
         <MessageContainer
           message={item.text}
           name={item.user.name}
@@ -81,6 +83,7 @@ function Chat({
           textColor={isSender ? themeTextColor : senderMessageColor}
           showAvatar={isSender ? showSenderAvatar : showReceiverAvatar}
           isSender={isSender}
+          loading={isLoading}
         />
       </View>
     );
@@ -134,7 +137,7 @@ function Chat({
         }
         resizeMode="cover"
       >
-        {isDateVisible && currentDate && (
+        {/* {isDateVisible && currentDate && (
           <View style={styles.currentDateAbsoluteContainer}>
             <View
               style={[
@@ -160,7 +163,7 @@ function Chat({
               </Text>
             </View>
           </View>
-        )}
+        )} */}
         <FlatList
           ref={flatListRef}
           data={[...messages]}
@@ -209,7 +212,7 @@ function Chat({
                 placeholder={placeholder}
                 value={text}
                 onChangeText={setText}
-                style={[styles.inputStyle, { color: inputColor }]}
+                style={[styles.inputStyle, { color: inputColor, borderRadius: 0  }]}
                 blurOnSubmit={false}
                 placeholderTextColor={placeholderColor}
                 multiline
@@ -229,8 +232,8 @@ function Chat({
               )}
             </View>
             <TouchableOpacity
-              style={[styles.sendContainer, { backgroundColor: themeColor }]}
-              onPress={onSendMessage}
+              style={[styles.sendContainer, { backgroundColor: themeColor, opacity: loading ? 0.5 : 1.0 }]}
+              onPress={loading ? null : onSendMessage}
               activeOpacity={0.9}
             >
               <Image

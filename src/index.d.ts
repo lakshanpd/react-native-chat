@@ -37,6 +37,7 @@ interface ChatProps {
   timeContainerColor?: string;
   timeContainerTextColor?: string;
   onEndReached?: () => any;
+  loading?: boolean;
 }
 export default function Chat({
   messages,

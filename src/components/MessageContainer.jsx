@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Linking, ScrollView, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import styles from "../styles/styles";
 import { getInitials } from "../hooks/useGetInitials";
-import { scale } from "../utils/scaling";
-import { formatDate } from "../hooks/useFormatDate";
+import Markdown from "react-native-markdown-renderer";
+import chatbotIcon from "../assets/images/chatbot_icon.png";
 
 const Avatar = ({ icon, name, textColor, backgroundColor }) => (
   <View style={[styles.avatarContainer, { backgroundColor }]}>
@@ -30,6 +30,7 @@ const MessageContainer = ({
   isSender,
   showAvatar,
   time,
+  loading,
 }) => {
   const [showDate, setShowDate] = useState(false);
   const messageContainerStyle = isSender
@@ -40,28 +41,54 @@ const MessageContainer = ({
   return (
     <View style={alignmentStyle}>
       {!isSender && showAvatar && (
-        <Avatar
-          icon={icon}
-          name={name}
-          textColor={textColor}
-          backgroundColor={backgroundColor}
-        />
+        <Avatar icon={chatbotIcon} name={name} textColor={textColor} backgroundColor={backgroundColor} />
       )}
-      <TouchableOpacity
-        style={[messageContainerStyle, { backgroundColor }]}
-        activeOpacity={0.9}
-      >
-        <Text style={[styles.messageText, { color: textColor }]}>
-          {message}
-        </Text>
-      </TouchableOpacity>
-      {isSender && showAvatar && (
-        <Avatar
-          icon={icon}
-          name={name}
-          textColor={textColor}
-          backgroundColor={backgroundColor}
+
+      <TouchableOpacity style={[messageContainerStyle, { backgroundColor }]} activeOpacity={0.9}>
+        <ScrollView style={{ flexShrink: 1 }}>
+
+        {isSender && !loading ? (
+  <Text style={[styles.messageText, { color: textColor }]}>{message}</Text>
+) : !isSender && loading ? (
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+
+<ActivityIndicator size="small" color="blue"/>
+
+</View>
+) : (
+  <Markdown
+    style={{
+      text: { color: textColor, fontFamily: "PlusJakartaSans-Regular" },
+      strong: { color: textColor, fontFamily: "PlusJakartaSans-Regular" }, 
+      link: { color: "blue", fontFamily: "PlusJakartaSans-Regular" }, 
+      bullet_list: { color: textColor, fontFamily: "PlusJakartaSans-Regular" }, 
+      ordered_list: { color: textColor, fontFamily: "PlusJakartaSans-Regular" }, 
+      heading1: { fontSize: 24, fontWeight: "bold", color: textColor, fontFamily: "PlusJakartaSans-Regular" },
+      heading2: { fontSize: 22, fontWeight: "bold", color: textColor, fontFamily: "PlusJakartaSans-Regular" },
+      heading3: { fontSize: 20, color: textColor, fontFamily: "PlusJakartaSans-Regular" },
+      image: { width: "100%", height: 200, borderRadius: 10, marginVertical: 5 }
+    }}
+    onLinkPress={(url) => Linking.openURL(url)}
+    rules={{
+      image: (node) => (
+        <Image
+          key={node.key}
+          source={{ uri: node.attributes.src }}
+          style={{ width: "100%", height: 200, borderRadius: 10, marginVertical: 5 }}
+          resizeMode="cover"
         />
+      ),
+    }}
+  >
+    {message}
+  </Markdown>
+)}
+
+        </ScrollView>
+      </TouchableOpacity>
+
+      {isSender && showAvatar && (
+        <Avatar name={name} textColor={textColor} backgroundColor={backgroundColor} />
       )}
     </View>
   );
