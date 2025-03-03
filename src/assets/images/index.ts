@@ -9,4 +9,5 @@ export default {
   tick: require("./tick.png"),
   double_tick: require("./double_tick.png"),
   attach: require("./attach.png"),
+  mic: require("./microphone.png"),
 };
