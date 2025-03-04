@@ -21,6 +21,7 @@ import Voice, {
   SpeechResultsEvent,
   SpeechErrorEvent,
 } from '@react-native-voice/voice';
+import CustomKeyboardAvoidingView from "@codsod/react-native-chat/src/components/CustomKeyboardAvoidingView";
 
 function Chat({
   messages = [],
@@ -67,6 +68,8 @@ function Chat({
   const [started, setStarted] = useState("");
   const [results, setResults] = useState([]);
   const [partialResults, setPartialResults] = useState([]);
+  const [inputHeight, setInputHeight] = useState(40);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
     Voice.onSpeechStart = (e) => {
@@ -159,11 +162,13 @@ function Chat({
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
-      scrollToStart
+      scrollToStart,
+      (event) => {setKeyboardHeight(event.endCoordinates.height)}
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
-      scrollToStart
+      scrollToStart,
+      (event) => {setKeyboardHeight(0)}
     );
 
     return () => {
@@ -243,7 +248,7 @@ function Chat({
   const BackgroundView = backgroundImage ? ImageBackground : View;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <CustomKeyboardAvoidingView>
       <BackgroundView
         style={[styles.container, style, { backgroundColor }]}
         source={
@@ -288,11 +293,13 @@ function Chat({
                 placeholder={placeholder}
                 value={text}
                 onChangeText={setText}
-                style={[styles.inputStyle, { color: inputColor, borderRadius: 0  }]}
+                style={[styles.inputStyle, { color: inputColor, borderRadius: 0}]}
                 blurOnSubmit={false}
                 placeholderTextColor={placeholderColor}
                 multiline
+
               />
+
 
               {Platform.OS == "ios" && 
                 <TouchableOpacity
@@ -323,7 +330,7 @@ function Chat({
           </View>
         )}
       </BackgroundView>
-    </KeyboardAvoidingView>
+    </CustomKeyboardAvoidingView>
   );
 }
 
