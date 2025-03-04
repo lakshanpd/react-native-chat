@@ -68,7 +68,7 @@ function Chat({
   const [started, setStarted] = useState("");
   const [results, setResults] = useState([]);
   const [partialResults, setPartialResults] = useState([]);
-  const [inputHeight, setInputHeight] = useState(40);
+  const [height, setHeight] = useState(40);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
@@ -289,15 +289,17 @@ function Chat({
                 },
               ]}
             >
+              
               <TextInput
                 placeholder={placeholder}
                 value={text}
                 onChangeText={setText}
-                style={[styles.inputStyle, { color: inputColor, borderRadius: 0}]}
+                onContentSizeChange={(event) => setHeight(event.nativeEvent.contentSize.height)} // Adjust height
+
+                style={[styles.inputStyle, { color: inputColor, height: Math.max(40, height)}]}
                 blurOnSubmit={false}
                 placeholderTextColor={placeholderColor}
                 multiline
-
               />
 
 
