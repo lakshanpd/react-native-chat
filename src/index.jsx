@@ -24,8 +24,6 @@ import Voice, {
   SpeechErrorEvent,
 } from '@react-native-voice/voice';
 import CustomKeyboardAvoidingView from "@codsod/react-native-chat/src/components/CustomKeyboardAvoidingView";
-import ItemNetwork from "@codsod/react-native-chat/src/components/item";
-import FastImage from "react-native-fast-image";
 
 function Chat({
   messages = [],

@@ -4,7 +4,7 @@ import styles from "../styles/styles";
 import { getInitials } from "../hooks/useGetInitials";
 // import Markdown from "react-native-markdown-renderer";
 import Markdown from 'react-native-markdown-display';
-import chatbotIcon from "../assets/images/chatbot_icon.jpeg";
+// import chatbotIcon from "../assets/images/chatbot_icon.jpeg";
 import Loader from 'react-native-three-dots-loader'
 
 const Avatar = ({ icon, name, textColor, backgroundColor }) => (
