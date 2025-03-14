@@ -44,7 +44,7 @@ const MessageContainer = ({
   return (
     <View style={alignmentStyle}>
       {!isSender && showAvatar && (
-        <Avatar icon={chatbotIcon} name={name} textColor={textColor} backgroundColor={backgroundColor} />
+        <Avatar icon={null} name={name} textColor={textColor} backgroundColor={backgroundColor} />
       )}
 
       <TouchableOpacity style={[messageContainerStyle]} activeOpacity={0.9}>
