@@ -11,6 +11,8 @@ import {
   Keyboard,
   Text,
   Platform,
+  Animated,
+  Button
 } from "react-native";
 import images from "./assets/images/index";
 import styles from "./styles/styles";
@@ -22,6 +24,8 @@ import Voice, {
   SpeechErrorEvent,
 } from '@react-native-voice/voice';
 import CustomKeyboardAvoidingView from "@codsod/react-native-chat/src/components/CustomKeyboardAvoidingView";
+import ItemNetwork from "@codsod/react-native-chat/src/components/item";
+import FastImage from "react-native-fast-image";
 
 function Chat({
   messages = [],
@@ -40,7 +44,7 @@ function Chat({
   },
   backgroundColor = "white",
   inputBackgroundColor = "white",
-  backgroundImage,
+  backgroundImage = images.background_gif,
   senderContainerColor = "#f0ebfb",
   senderMessageColor = "#000000",
   customFooter,
@@ -52,7 +56,7 @@ function Chat({
   timeContainerColor,
   timeContainerTextColor,
   onEndReached,
-  loading 
+  loading,
 }) {
   const [text, setText] = useState("");
   const flatListRef = useRef(null);
@@ -70,6 +74,10 @@ function Chat({
   const [partialResults, setPartialResults] = useState([]);
   const [height, setHeight] = useState(40);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [loading_, setLoading_] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const fadeAnim = useRef(new Animated.Value(1)).current; 
 
   useEffect(() => {
     Voice.onSpeechStart = (e) => {
@@ -188,6 +196,16 @@ function Chat({
         return;
     }
  };
+
+ useEffect(() => {
+  if (messages.length === 0) {
+    setIsVisible(true);
+  }
+  else {
+    setIsVisible(false);
+  }
+  console.log(messages.length === 0);
+}, []);
  
 
   const messageRenderItem = ({ item }) => {
@@ -249,15 +267,30 @@ function Chat({
 
   return (
     <CustomKeyboardAvoidingView>
-      <BackgroundView
+      <View
         style={[styles.container, style, { backgroundColor }]}
-        source={
-          typeof backgroundImage === "string"
-            ? { uri: backgroundImage }
-            : backgroundImage
-        }
-        resizeMode="cover"
       >
+
+{/* <Animated.View style={{ opacity: fadeAnim, flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 150 }}>
+ 
+
+<FastImage
+  source={images.background_gif}
+  style={{
+    width: 300,
+    height: 300,
+    alignSelf: "center", 
+    backgroundColor: "blue",
+    marginBottom: 20,
+  }}
+  resizeMode={FastImage.resizeMode.contain}
+  onLoadStart={() => setLoading_(true)}
+  onLoadEnd={() => setLoading_(false)}
+/>
+
+<ItemNetwork />
+</Animated.View> */}
+{/* <Button title="Toggle Animation" onPress={() => setIsVisible(false)} /> */}
         <FlatList
           ref={flatListRef}
           data={[...messages]}
@@ -331,7 +364,7 @@ function Chat({
             </TouchableOpacity>
           </View>
         )}
-      </BackgroundView>
+      </View>
     </CustomKeyboardAvoidingView>
   );
 }
