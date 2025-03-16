@@ -59,49 +59,6 @@ const MessageContainer = ({
 </View>
 ) : (
   
-//   <Markdown
-//     style={{
-//       text: { color: "black", fontSize: 13,}, 
-//       strong: { color: "black", fontWeight: "600"}, 
-//       link: { color: "blue" }, 
-//       heading1: { fontSize: 18, fontWeight: "bold", color: textColor },
-//       heading2: { fontSize: 16, fontWeight: "bold", color: textColor },
-//       heading3: { fontSize: 15, fontWeight: "600", color: textColor, fontFamily: ""},
-//       heading4: { fontSize: 13, color: textColor },
-//       heading5: { fontSize: 13, color: textColor },
-//       heading6: { fontSize: 13, color: textColor },
-//       image: { width: "100%", height: 200, borderRadius: 10, marginVertical: 5 },
-
-//     }}
-//     onLinkPress={(url) => Linking.openURL(url)}
-//     rules={{
-//       image: (node) => (
-//         <Image
-//           key={node.key}
-//           source={{ uri: node.attributes.src }}
-//           style={{ width: "100%", height: 200, borderRadius: 10, marginVertical: 5 }}
-//           resizeMode="cover"
-//         />
-//       )
-//     }}
-//   >
-   
-// {`
-// - **Speakers:**
-//   - Nadheesh Jihan
-//   - Shafreen Anfar
-// - **Description:** This session explores building enterprise AI applications using key architectural patterns like Generative AI, RAG, and AI Agents. It covers building and integrating AI apps, managing authentication and authorization, and best practices for deploying AI-powered applications.
-
-// - **Speakers:**
-//   - Maryam Ziyad
-
-// - **Speakers:**
-//   - Malith Jayasinghe
-
-// **Expert Panel: AI's Role in Modernization**
-// - **Speakers:**
-//   - Malith Jayasinghe
-//   - Victor Dibia`}  </Markdown>
 <Markdown style={{ text: { color: "black", fontSize: 13,},
 strong: { color: "black", fontWeight: "600"},
 link: { color: "blue" },

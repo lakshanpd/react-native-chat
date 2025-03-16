@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
     width: moderateScale(20),
     height: moderateScale(20),
   },
+  micOn: {
+    width: moderateScale(40),
+    height: moderateScale(40),
+  },
   messageWrapper: {
     paddingHorizontal: scale(15),
     paddingVertical: verticalScale(5),

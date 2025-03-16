@@ -12,7 +12,8 @@ import {
   Text,
   Platform,
   Animated,
-  Button
+  Button,
+  Vibration
 } from "react-native";
 import images from "./assets/images/index";
 import styles from "./styles/styles";
@@ -183,17 +184,28 @@ function Chat({
     };
   }, []);
 
-  const handleMic = async () => {
-    if (isMicOn) {
-       await stopRecognizing();
-       setIsMicOn(false);
-       return;
-    } else {
-       await startRecognizing();
-        setIsMicOn(true);
-        return;
-    }
- };
+//   const handleMic = async () => {
+//     if (isMicOn) {
+//        await stopRecognizing();
+//        setIsMicOn(false);
+//        return;
+//     } else {
+//        await startRecognizing();
+//         setIsMicOn(true);
+//         return;
+//     }
+//  };
+
+ const micTurnOff = async () => {
+  await stopRecognizing();
+  setIsMicOn(false);
+};
+
+const micTurnOn = async () => {
+  await startRecognizing();
+  setIsMicOn(true);
+};
+
 
  useEffect(() => {
   if (messages.length === 0) {
@@ -227,11 +239,14 @@ function Chat({
   };
 
   const onSendMessage = () => {
-    if (text.trim().length === 0) return;
-    if (text.trim()) {
-      setMessages(text.trim());
-      setText("");
+    if (text) {
+      if (text.trim().length === 0) return;
+      if (text.trim()) {
+        setMessages(text.trim());
+        setText("");
+      }
     }
+
   };
 
   const scrollToStart = () => {
@@ -268,27 +283,6 @@ function Chat({
       <View
         style={[styles.container, style, { backgroundColor }]}
       >
-
-{/* <Animated.View style={{ opacity: fadeAnim, flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 150 }}>
- 
-
-<FastImage
-  source={images.background_gif}
-  style={{
-    width: 300,
-    height: 300,
-    alignSelf: "center", 
-    backgroundColor: "blue",
-    marginBottom: 20,
-  }}
-  resizeMode={FastImage.resizeMode.contain}
-  onLoadStart={() => setLoading_(true)}
-  onLoadEnd={() => setLoading_(false)}
-/>
-
-<ItemNetwork />
-</Animated.View> */}
-{/* <Button title="Toggle Animation" onPress={() => setIsVisible(false)} /> */}
         <FlatList
           ref={flatListRef}
           data={[...messages]}
@@ -322,7 +316,7 @@ function Chat({
             >
               
               <TextInput
-                placeholder={placeholder}
+                placeholder={isMicOn ? "I'm listening..." :placeholder}
                 value={text}
                 onChangeText={setText}
                 onContentSizeChange={(event) => setHeight(event.nativeEvent.contentSize.height)} // Adjust height
@@ -337,13 +331,15 @@ function Chat({
               {Platform.OS == "ios" && 
                 <TouchableOpacity
                   style={[styles.imageContainer]}
-                  onPress={handleMic}
+                  onPressIn={micTurnOn}
+                  onPressOut={micTurnOff}
                   activeOpacity={0.8}
                 >
                   <Image
                     source={images.mic}
-                    style={[styles.sendImage, { tintColor: isMicOn ? "red" : "black" }]}
+                    style={[!isMicOn ? styles.sendImage : styles.micOn, { tintColor: isMicOn ? "red" : "black" }]}
                     resizeMode="contain"
+                    
                   />
                 </TouchableOpacity>}
 
